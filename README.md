@@ -1,2 +1,3 @@
-# licdata-domain
-Definition for acmsl/licdata-domain
+# Licdata Domain
+
+Definition for [Licdata Domain](https://github.com/acmsl/licdata-domain "Licdata Domain").

@@ -59,8 +59,8 @@
         license = pkgs.lib.licenses.gpl3;
         homepage = "https://github.com/${org}/${repo}";
         maintainers = [ "rydnr <github@acm-sl.org>" ];
-        archRole = "E";
-        space = "A";
+        archRole = "D";
+        space = "D";
         layer = "D";
         nixosVersion = builtins.readFile "${nixos}/.version";
         nixpkgsRelease =
@@ -105,6 +105,7 @@
 
             nativeBuildInputs = with python.pkgs; [ pip poetry-core ];
             propagatedBuildInputs = with python.pkgs; [
+              acmsl-licdata-events
               pythoneda-shared-pythonlang-domain
             ];
 

@@ -1,8 +1,8 @@
 # templates/pyprojecttoml.template
 #
-# This file is the template for acmsl's Licdata Artifact Events
+# This file is the template for acmsl's Licdata Domain
 #
-# Copyright (C) 2024-today acmsl's Licdata Artifact Events
+# Copyright (C) 2024-today acmsl's Licdata Domain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ homepage = "@homepage@"
 packages = [{include = "@package@"}]
 
 [tool.poetry.dependencies]
+acmslLicdataEvents = "^@acmslLicdataEvents@"
 python = "^@pythonMajorMinorVersion@"
 pythoneda-shared-pythonlang-domain = "^@pythonedaSharedPythonlangDomain@"
 

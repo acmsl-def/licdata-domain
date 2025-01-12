@@ -33,7 +33,7 @@
     pythoneda-shared-pythonlang-banner = {
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
-      url = "github:pythoneda-shared-pythonlang-def/banner/0.0.74";
+      url = "github:pythoneda-shared-pythonlang-def/banner/0.0.77";
     };
     pythoneda-shared-pythonlang-domain = {
       inputs.flake-utils.follows = "flake-utils";
@@ -59,7 +59,7 @@
         license = pkgs.lib.licenses.gpl3;
         homepage = "https://github.com/${org}/${repo}";
         maintainers = [ "rydnr <github@acm-sl.org>" ];
-        archRole = "D";
+        archRole = "B";
         space = "D";
         layer = "D";
         nixpkgsVersion = builtins.readFile "${nixpkgs}/.version";
@@ -112,12 +112,12 @@
 
             unpackPhase = ''
               command cp -r ${src} .
-              sourceRoot=$(ls | grep -v env-vars)
+              sourceRoot=$(command ls | command grep -v env-vars)
               command chmod -R +w $sourceRoot
               command cp ${pyprojectToml} $sourceRoot/pyproject.toml
             '';
 
-            postInstall = ''
+            postInstall = with python.pkgs; ''
               command pushd /build/$sourceRoot
               for f in $(command find . -name '__init__.py' | sed 's ^\./  g'); do
                 if [[ ! -e $out/lib/python${pythonMajorMinorVersion}/site-packages/$f ]]; then
@@ -126,8 +126,18 @@
                 fi
               done
               command popd
-              command mkdir $out/dist
+              command mkdir -p $out/dist $out/deps/flakes
               command cp dist/${wheelName} $out/dist
+              for dep in ${acmsl-licdata-events} ${pythoneda-shared-pythonlang-domain}; do
+                command cp -r $dep/dist/* $out/deps || true
+                if [ -e $dep/deps ]; then
+                  command cp -r $dep/deps/* $out/deps || true
+                fi
+                METADATA=$dep/lib/python${pythonMajorMinorVersion}/site-packages/*.dist-info/METADATA
+                NAME="$(command grep -m 1 '^Name: ' $METADATA | command cut -d ' ' -f 2)"
+                VERSION="$(command grep -m 1 '^Version: ' $METADATA | command cut -d ' ' -f 2)"
+                command ln -s $dep $out/deps/flakes/$NAME-$VERSION || true
+              done
             '';
 
             meta = with pkgs.lib; {

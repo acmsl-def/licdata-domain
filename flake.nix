@@ -111,7 +111,7 @@
             # pythonImportsCheck = [ pythonpackage ];
 
             unpackPhase = ''
-              command cp -r ${src} .
+              command cp -r ${src}/* .
               command chmod -R +w .
               command cp ${pyprojectToml} ./pyproject.toml
             '';
